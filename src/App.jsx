@@ -11,6 +11,7 @@ function App() {
     <div className="App flex flex-col h-screen">
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
+        <Sidebar currentView={currentView} onViewChange={setCurrentView} />
         <main className="flex-1 overflow-auto bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
           {currentView === 'home' && <Dashboard />}
           {currentView === 'inbox' && (
