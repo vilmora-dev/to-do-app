@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import LoginPage from './auth/components/LoginPage';
+import { RequireAuth } from './auth/components/RequireAuth';
 
 function MainLayout() {
   const [currentView, setCurrentView] = useState('home');
@@ -38,7 +39,9 @@ function App() {
         <Route
           path="/"
           element={
+            <RequireAuth>
               <MainLayout />
+            </RequireAuth>
           }
         />
         <Route path="*" element={<Navigate to="/" replace />} />
