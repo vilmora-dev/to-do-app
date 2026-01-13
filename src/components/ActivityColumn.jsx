@@ -57,8 +57,8 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
   };
 
   const handleAddActivity = () => {
-    if (!newActivity.title || !newActivity.assignee || !newActivity.time) {
-      alert('Please fill in title, assignee, and time');
+    if (!newActivity.title || !newActivity.assignee || !newActivity.startDate || !newActivity.endDate) {
+      alert('Please fill in title, assignee, start date, and end date');
       return;
     }
 
@@ -67,8 +67,8 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
       title: newActivity.title,
       priority: newActivity.priority,
       assignee: newActivity.assignee,
-      time: newActivity.time,
-      duration: newActivity.duration || undefined
+      startDate: newActivity.startDate,
+      endDate: newActivity.endDate
     };
 
     if (editingActivity) {
@@ -78,7 +78,7 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
       onAdd(columnId, activity);
     }
     
-    setNewActivity({ title: '', priority: 'medium', assignee: '', time: getCurrentDateTime(), duration: '' });
+    setNewActivity({ title: '', priority: 'medium', assignee: '', startDate: getCurrentDateTime(), endDate: getCurrentDateTime() });
     setShowModal(false);
   };
 
@@ -88,8 +88,8 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
       title: activity.title,
       priority: activity.priority,
       assignee: activity.assignee,
-      time: activity.time,
-      duration: activity.duration || ''
+      startDate: activity.startDate,
+      endDate: activity.endDate
     });
     setShowModal(true);
     setOpenMenuId(null);
@@ -117,7 +117,7 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
 
   return (
     <div className="flex-1 min-w-0 mb-1">
-      <div className="bg-white rounded-xl shadow-lg p-4 h-screen flex flex-col max-h-[calc(100vh-13rem)]">
+      <div className="bg-white rounded-xl shadow-lg p-4 h-screen flex flex-col max-h-[calc(100vh-11rem)]">
         <div className="flex justify-between items-center mb-4 flex-shrink-0">
           <h2 className="text-lg font-bold text-gray-800">{title}</h2>
           <button
@@ -164,9 +164,9 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
                   <div className="text-xs text-gray-600 mb-2">
                     👤 {activity.assignee}
                   </div>
-                  <div className="flex gap-3 text-xs text-gray-600">
-                    <span>🕐 {formatDateTime(activity.time)}</span>
-                    {activity.duration && <span>⏱️ {activity.duration}</span>}
+                  <div className="flex flex-col gap-1 text-xs text-gray-600">
+                    <span>📅 {formatDateTime(activity.startDate)}</span>
+                    <span>🏁 {formatDateTime(activity.endDate)}</span>
                   </div>
                 </div>
                 <div className="relative flex-shrink-0">
@@ -213,7 +213,7 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold text-gray-800">
@@ -223,7 +223,7 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
                 onClick={() => {
                   setShowModal(false);
                   setEditingActivity(null);
-                  setNewActivity({ title: '', priority: 'medium', assignee: '', time: getCurrentDateTime(), duration: '' });
+                  setNewActivity({ title: '', priority: 'medium', assignee: '', startDate: getCurrentDateTime(), endDate: getCurrentDateTime() });
                 }}
                 className="text-gray-500 hover:text-gray-700"
               >
@@ -275,26 +275,25 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Date & Time
+                  Start Date
                 </label>
                 <input
                   type="datetime-local"
-                  value={newActivity.time}
-                  onChange={(e) => setNewActivity({ ...newActivity, time: e.target.value })}
+                  value={newActivity.startDate}
+                  onChange={(e) => setNewActivity({ ...newActivity, startDate: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Duration (Optional)
+                  End Date
                 </label>
                 <input
-                  type="text"
-                  value={newActivity.duration}
-                  onChange={(e) => setNewActivity({ ...newActivity, duration: e.target.value })}
+                  type="datetime-local"
+                  value={newActivity.endDate}
+                  onChange={(e) => setNewActivity({ ...newActivity, endDate: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  placeholder="e.g., 45 min"
                 />
               </div>
 
@@ -303,7 +302,7 @@ export default function ActivityColumn({ title, activities, columnId, onDrop, on
                   onClick={() => {
                     setShowModal(false);
                     setEditingActivity(null);
-                    setNewActivity({ title: '', priority: 'medium', assignee: '', time: '', duration: '' });
+                    setNewActivity({ title: '', priority: 'medium', assignee: '', startDate: getCurrentDateTime(), endDate: getCurrentDateTime() });
                   }}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                 >
