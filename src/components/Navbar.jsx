@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { User, Settings, LogOut } from 'lucide-react';
+import { useAuth } from '../auth/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    console.log('Logout clicked');
-    // Add logout logic here
+    logout();
+    navigate("/login");
+    setMenuOpen(false);
   };
 
   const handleProfile = () => {
