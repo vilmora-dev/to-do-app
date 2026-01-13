@@ -1,10 +1,12 @@
-import { useState } from 'react'
-import './App.css'
-import Dashboard from './components/Dashboard'
-import Navbar from './components/Navbar'
-import Sidebar from './components/Sidebar'
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import './App.css';
+import Dashboard from './components/Dashboard';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import LoginPage from './auth/components/LoginPage';
 
-function App() {
+function MainLayout() {
   const [currentView, setCurrentView] = useState('home');
 
   return (
@@ -25,7 +27,24 @@ function App() {
         </main>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+              <MainLayout />
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
