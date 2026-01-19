@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Home, Inbox } from 'lucide-react';
+import { Home, Inbox, LayoutDashboard } from 'lucide-react';
 
 export default function Sidebar({ currentView, onViewChange }) {
   const menuItems = [
-    { id: 'home', icon: Home, label: 'Home' },
+    { id: 'home', icon: Home, label: 'My Space' },
+    { id: 'board', icon: LayoutDashboard, label: 'Board' },
     { id: 'inbox', icon: Inbox, label: 'Inbox' }
   ];
 
